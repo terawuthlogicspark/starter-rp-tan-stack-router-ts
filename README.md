@@ -18,8 +18,8 @@ Welcome to the React PDF Starter Toolkit! This repository provides a comprehensi
 1. **Clone the Repository**: If you haven't already, clone the repository and navigate into the project directory.
 
    ```bash
-   git clone https://github.com/reactpdf/starter-rp-react-ts-vite.git
-   cd starter-rp-react-ts-vite
+   git clone https://github.com/reactpdf/starter-rp-tan-stack-router-ts.git
+   cd starter-rp-tan-stack-router-ts
    ```
 
 2. **Install Dependencies**: Install the necessary dependencies using npm, yarn, pnpm or bun.
@@ -50,7 +50,7 @@ This repository includes an example project to demonstrate React PDF in action.
    bun run dev
    ```
 
-2. **Open in Browser**: Open your browser and navigate to `http://localhost:5173` (or the port specified in your terminal) to see the example project in action
+2. **Open in Browser**: Open your browser and navigate to `http://localhost:3000` (or the port specified in your terminal) to see the example project in action
 
 ### Using the React PDF Component
 
@@ -62,15 +62,13 @@ Once the example project is running, you can explore the source code to see how 
 import {
   RPProvider,
   RPDefaultLayout,
-  RPPages,
-  RPProviderProps,
-  RPLayoutProps,
+  RPPages
 } from "@pdf-viewer/react";
 
 interface Props {
   showToolbar?: boolean;
-  providerProps?: RPProviderProps;
-  defaultLayoutProps?: RPLayoutProps;
+  providerProps?: any;
+  defaultLayoutProps?: any;
 }
 
 export const AppPdfViewer = (props: Props) => {
@@ -95,44 +93,50 @@ export const AppPdfViewer = (props: Props) => {
 };
 ```
 
-2. **Use the component in the page**: Add the React PDF component to your page
+2. **Use the component in the page**: Add the React PDF component to your TanStack Router root route
 
 ```tsx
+import { createFileRoute } from "@tanstack/react-router";
 import { RPConfig } from "@pdf-viewer/react";
-import { AppPdfViewer } from "./components/AppPdfViewer";
+import { AppPdfViewer } from "../components/AppPdfViewer";
+import "../App.css";
+
+export const Route = createFileRoute("/")({
+  component: App,
+});
 
 function App() {
   return (
-    <RPConfig licenseKey="">
-      <div className="container">
-        <h1>RP Starter Toolkit: Vite + React</h1>
-        <br />
-        <h2>Default Toolbar</h2>
-        <AppPdfViewer />
-        <h2>Without Toolbar</h2>
-        <AppPdfViewer
-          showToolbar={false}
-          defaultLayoutProps={{
-            style: { width: "100%", height: "550px" },
-          }}
-        />
-        <h2>Mobile</h2>
-        <AppPdfViewer
-          defaultLayoutProps={{
-            style: { width: "500px" },
-          }}
-        />
-      </div>
-    </RPConfig>
+    <div className="App">
+      <RPConfig licenseKey="">
+        <div className="container">
+          <h1>RP Starter Toolkit: TanStack Router</h1>
+          <br />
+          <h2>Default Toolbar</h2>
+          <AppPdfViewer />
+          <h2>Without Toolbar</h2>
+          <AppPdfViewer
+            showToolbar={false}
+            defaultLayoutProps={{
+              style: { width: "100%", height: "550px" },
+            }}
+          />
+          <h2>Mobile</h2>
+          <AppPdfViewer
+            defaultLayoutProps={{
+              style: { width: "500px" },
+            }}
+          />
+        </div>
+      </RPConfig>
+    </div>
   );
 }
-
-export default App;
 ```
 
 ## Examples
 
-For more examples, please refer to the `src/App.tsx` file in this repository:
+For more examples, please refer to the `src/routes/index.tsx` file in this repository:
 
 - Default Toolbar
 - Without Toolbar
