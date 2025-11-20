@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
-import logo from '../logo.svg'
+import { RPConfig } from '@pdf-viewer/react'
+import { AppPdfViewer } from '../components/AppPdfViewer'
 import '../App.css'
 
 export const Route = createFileRoute('/')({
@@ -9,28 +10,27 @@ export const Route = createFileRoute('/')({
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/routes/index.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        <a
-          className="App-link"
-          href="https://tanstack.com"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn TanStack
-        </a>
-      </header>
+      <RPConfig licenseKey="">
+      <div className="container">
+        <h1>RP Starter Toolkit: TanStack Router</h1>
+        <br />
+        <h2>Default Toolbar</h2>
+        <AppPdfViewer />
+        <h2>Without Toolbar</h2>
+        <AppPdfViewer
+          showToolbar={false}
+          defaultLayoutProps={{
+            style: { width: "100%", height: "550px" },
+          }}
+        />
+        <h2>Mobile</h2>
+        <AppPdfViewer
+          defaultLayoutProps={{
+            style: { width: "500px" },
+          }}
+        />
+      </div>
+    </RPConfig>
     </div>
   )
 }

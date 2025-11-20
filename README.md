@@ -1,290 +1,151 @@
-Welcome to your new TanStack app! 
+# React PDF Starter Toolkit in React.js, TypeScript and Vite
 
-# Getting Started
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github.com/pdf-viewer-react/starter-rp-react-ts-vite)
 
-To run this application:
+Welcome to the React PDF Starter Toolkit! This repository provides a comprehensive guide on integrating React PDF with React, TypeScript and Vite. It showcases how React PDF can be integrated and rendered as part of a React.js project.
 
-```bash
-npm install
-npm run start
-```
+## Table of Contents
 
-# Building For Production
+- [Usage](#usage)
+  - [Project Setup](#project-setup)
+  - [Running the Example Project](#running-the-example-project)
+- [Examples](#examples)
 
-To build this application for production:
+## Usage
 
-```bash
-npm run build
-```
+### Project Setup
 
-## Testing
+1. **Clone the Repository**: If you haven't already, clone the repository and navigate into the project directory.
 
-This project uses [Vitest](https://vitest.dev/) for testing. You can run the tests with:
+   ```bash
+   git clone https://github.com/reactpdf/starter-rp-react-ts-vite.git
+   cd starter-rp-react-ts-vite
+   ```
 
-```bash
-npm run test
-```
+2. **Install Dependencies**: Install the necessary dependencies using npm, yarn, pnpm or bun.
 
-## Styling
+   ```bash
+   npm install
+   # or
+   yarn install
+   # or
+   pnpm install
+   # or
+   bun install
+   ```
 
-This project uses CSS for styling.
+### Running the Example Project
 
+This repository includes an example project to demonstrate React PDF in action.
 
+1. **Start the Development Server**: Use the following command to start the development server
 
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   # or
+   pnpm run dev
+   # or
+   bun run dev
+   ```
 
-## Routing
-This project uses [TanStack Router](https://tanstack.com/router). The initial setup is a file based router. Which means that the routes are managed as files in `src/routes`.
+2. **Open in Browser**: Open your browser and navigate to `http://localhost:5173` (or the port specified in your terminal) to see the example project in action
 
-### Adding A Route
+### Using the React PDF Component
 
-To add a new route to your application just add another a new file in the `./src/routes` directory.
+Once the example project is running, you can explore the source code to see how the React PDF component is integrated. Here is a brief overview:
 
-TanStack will automatically generate the content of the route file for you.
-
-Now that you have two routes you can use a `Link` component to navigate between them.
-
-### Adding Links
-
-To use SPA (Single Page Application) navigation you will need to import the `Link` component from `@tanstack/react-router`.
-
-```tsx
-import { Link } from "@tanstack/react-router";
-```
-
-Then anywhere in your JSX you can use it like so:
-
-```tsx
-<Link to="/about">About</Link>
-```
-
-This will create a link that will navigate to the `/about` route.
-
-More information on the `Link` component can be found in the [Link documentation](https://tanstack.com/router/v1/docs/framework/react/api/router/linkComponent).
-
-### Using A Layout
-
-In the File Based Routing setup the layout is located in `src/routes/__root.tsx`. Anything you add to the root route will appear in all the routes. The route content will appear in the JSX where you use the `<Outlet />` component.
-
-Here is an example layout that includes a header:
+1.  **Import the component**: Import the desired React PDF component into your codes
 
 ```tsx
-import { Outlet, createRootRoute } from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
+import {
+  RPProvider,
+  RPDefaultLayout,
+  RPPages,
+  RPProviderProps,
+  RPLayoutProps,
+} from "@pdf-viewer/react";
 
-import { Link } from "@tanstack/react-router";
-
-export const Route = createRootRoute({
-  component: () => (
-    <>
-      <header>
-        <nav>
-          <Link to="/">Home</Link>
-          <Link to="/about">About</Link>
-        </nav>
-      </header>
-      <Outlet />
-      <TanStackRouterDevtools />
-    </>
-  ),
-})
-```
-
-The `<TanStackRouterDevtools />` component is not required so you can remove it if you don't want it in your layout.
-
-More information on layouts can be found in the [Layouts documentation](https://tanstack.com/router/latest/docs/framework/react/guide/routing-concepts#layouts).
-
-
-## Data Fetching
-
-There are multiple ways to fetch data in your application. You can use TanStack Query to fetch data from a server. But you can also use the `loader` functionality built into TanStack Router to load the data for a route before it's rendered.
-
-For example:
-
-```tsx
-const peopleRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: "/people",
-  loader: async () => {
-    const response = await fetch("https://swapi.dev/api/people");
-    return response.json() as Promise<{
-      results: {
-        name: string;
-      }[];
-    }>;
-  },
-  component: () => {
-    const data = peopleRoute.useLoaderData();
-    return (
-      <ul>
-        {data.results.map((person) => (
-          <li key={person.name}>{person.name}</li>
-        ))}
-      </ul>
-    );
-  },
-});
-```
-
-Loaders simplify your data fetching logic dramatically. Check out more information in the [Loader documentation](https://tanstack.com/router/latest/docs/framework/react/guide/data-loading#loader-parameters).
-
-### React-Query
-
-React-Query is an excellent addition or alternative to route loading and integrating it into you application is a breeze.
-
-First add your dependencies:
-
-```bash
-npm install @tanstack/react-query @tanstack/react-query-devtools
-```
-
-Next we'll need to create a query client and provider. We recommend putting those in `main.tsx`.
-
-```tsx
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
-// ...
-
-const queryClient = new QueryClient();
-
-// ...
-
-if (!rootElement.innerHTML) {
-  const root = ReactDOM.createRoot(rootElement);
-
-  root.render(
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>
-  );
+interface Props {
+  showToolbar?: boolean;
+  providerProps?: RPProviderProps;
+  defaultLayoutProps?: RPLayoutProps;
 }
-```
 
-You can also add TanStack Query Devtools to the root route (optional).
-
-```tsx
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-
-const rootRoute = createRootRoute({
-  component: () => (
-    <>
-      <Outlet />
-      <ReactQueryDevtools buttonPosition="top-right" />
-      <TanStackRouterDevtools />
-    </>
-  ),
-});
-```
-
-Now you can use `useQuery` to fetch your data.
-
-```tsx
-import { useQuery } from "@tanstack/react-query";
-
-import "./App.css";
-
-function App() {
-  const { data } = useQuery({
-    queryKey: ["people"],
-    queryFn: () =>
-      fetch("https://swapi.dev/api/people")
-        .then((res) => res.json())
-        .then((data) => data.results as { name: string }[]),
-    initialData: [],
-  });
+export const AppPdfViewer = (props: Props) => {
+  const { showToolbar = true, providerProps, defaultLayoutProps } = props;
 
   return (
-    <div>
-      <ul>
-        {data.map((person) => (
-          <li key={person.name}>{person.name}</li>
-        ))}
-      </ul>
-    </div>
+    <RPProvider
+      src="https://cdn.codewithmosh.com/image/upload/v1721763853/guides/web-roadmap.pdf"
+      {...providerProps}
+    >
+      {showToolbar ? (
+        <RPDefaultLayout {...defaultLayoutProps}>
+          <RPPages />
+        </RPDefaultLayout>
+      ) : (
+        <div style={{ width: "100%", height: "550px" }}>
+          <RPPages />
+        </div>
+      )}
+    </RPProvider>
+  );
+};
+```
+
+2. **Use the component in the page**: Add the React PDF component to your page
+
+```tsx
+import { RPConfig } from "@pdf-viewer/react";
+import { AppPdfViewer } from "./components/AppPdfViewer";
+
+function App() {
+  return (
+    <RPConfig licenseKey="">
+      <div className="container">
+        <h1>RP Starter Toolkit: Vite + React</h1>
+        <br />
+        <h2>Default Toolbar</h2>
+        <AppPdfViewer />
+        <h2>Without Toolbar</h2>
+        <AppPdfViewer
+          showToolbar={false}
+          defaultLayoutProps={{
+            style: { width: "100%", height: "550px" },
+          }}
+        />
+        <h2>Mobile</h2>
+        <AppPdfViewer
+          defaultLayoutProps={{
+            style: { width: "500px" },
+          }}
+        />
+      </div>
+    </RPConfig>
   );
 }
 
 export default App;
 ```
 
-You can find out everything you need to know on how to use React-Query in the [React-Query documentation](https://tanstack.com/query/latest/docs/framework/react/overview).
+## Examples
 
-## State Management
+For more examples, please refer to the `src/App.tsx` file in this repository:
 
-Another common requirement for React applications is state management. There are many options for state management in React. TanStack Store provides a great starting point for your project.
+- Default Toolbar
+- Without Toolbar
+- Mobile View
 
-First you need to add TanStack Store as a dependency:
+_Remark: If you would like more examples, feel free open an issue._
 
-```bash
-npm install @tanstack/store
-```
+For more configurations, please check the [documentation](https://docs.react-pdf.dev) site.
 
-Now let's create a simple counter in the `src/App.tsx` file as a demonstration.
+## Meta
+- Homepage: [https://www.react-pdf.dev](https://www.react-pdf.dev)
+- Docs: [https://docs.react-pdf.dev](https://docs.react-pdf.dev)
 
-```tsx
-import { useStore } from "@tanstack/react-store";
-import { Store } from "@tanstack/store";
-import "./App.css";
+---
 
-const countStore = new Store(0);
-
-function App() {
-  const count = useStore(countStore);
-  return (
-    <div>
-      <button onClick={() => countStore.setState((n) => n + 1)}>
-        Increment - {count}
-      </button>
-    </div>
-  );
-}
-
-export default App;
-```
-
-One of the many nice features of TanStack Store is the ability to derive state from other state. That derived state will update when the base state updates.
-
-Let's check this out by doubling the count using derived state.
-
-```tsx
-import { useStore } from "@tanstack/react-store";
-import { Store, Derived } from "@tanstack/store";
-import "./App.css";
-
-const countStore = new Store(0);
-
-const doubledStore = new Derived({
-  fn: () => countStore.state * 2,
-  deps: [countStore],
-});
-doubledStore.mount();
-
-function App() {
-  const count = useStore(countStore);
-  const doubledCount = useStore(doubledStore);
-
-  return (
-    <div>
-      <button onClick={() => countStore.setState((n) => n + 1)}>
-        Increment - {count}
-      </button>
-      <div>Doubled - {doubledCount}</div>
-    </div>
-  );
-}
-
-export default App;
-```
-
-We use the `Derived` class to create a new store that is derived from another store. The `Derived` class has a `mount` method that will start the derived store updating.
-
-Once we've created the derived store we can use it in the `App` component just like we would any other store using the `useStore` hook.
-
-You can find out everything you need to know on how to use TanStack Store in the [TanStack Store documentation](https://tanstack.com/store/latest).
-
-# Demo files
-
-Files prefixed with `demo` can be safely deleted. They are there to provide a starting point for you to play around with the features you've installed.
-
-# Learn More
-
-You can learn more about all of the offerings from TanStack in the [TanStack documentation](https://tanstack.com).
+Thank you for using React PDF! We hope this toolkit helps you build amazing React.js applications. If you have any questions or need further assistance on this example, please feel free to open an issue. Happy coding!
